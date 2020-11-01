@@ -32,6 +32,14 @@ public class FormateurController {
         return  "Le formateur a été supprimé avec succès";
     }
 
+    //Supprimer tous les formateurs
+    @DeleteMapping(value ="/SupprimerFormateurs")
+    public String deleteFormateurs()
+    {
+        formateurRepository.deleteAll();
+        return  "ddddddddd";
+    }
+
     //Ajouter un formateur
     @PostMapping(value ="/AjoutFormateur")
     public String addFormateur(@RequestBody Formateur formateur) {

@@ -3,6 +3,8 @@ package com.techcenter.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "formateurs")
 public class Formateur {
 
@@ -15,7 +17,8 @@ public class Formateur {
     private String email ;
     private String date_de_naissance ;
     private String adresse ;
-    private String num_tel ;
+    private List<String> num_tel ;
+    private List<Spécialité> liste_des_spécialités;
 
     public Formateur() {
     }
@@ -25,7 +28,7 @@ public class Formateur {
         this.mot_de_passe = mot_de_passe;
     }
 
-    public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, String num_tel) {
+    public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, List<String> num_tel, List<Spécialité> liste_des_spécialités) {
         this.cin = cin;
         this.mot_de_passe = mot_de_passe;
         this.nom = nom;
@@ -34,6 +37,7 @@ public class Formateur {
         this.date_de_naissance = date_de_naissance;
         this.adresse = adresse;
         this.num_tel = num_tel;
+        this.liste_des_spécialités = liste_des_spécialités;
     }
 
     public String getId() {
@@ -100,11 +104,19 @@ public class Formateur {
         this.adresse = adresse;
     }
 
-    public String getNum_tel() {
+    public List<String> getNum_tel() {
         return num_tel;
     }
 
-    public void setNum_tel(String num_tel) {
+    public void setNum_tel(List<String> num_tel) {
         this.num_tel = num_tel;
+    }
+
+    public List<Spécialité> getListe_des_spécialités() {
+        return liste_des_spécialités;
+    }
+
+    public void setListe_des_spécialités(List<Spécialité> liste_des_spécialités) {
+        this.liste_des_spécialités = liste_des_spécialités;
     }
 }
