@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface EtudiantRepository extends MongoRepository<Etudiant,Long> {
 
     String deleteEtudiantByCin(String cin);
-    Optional<Etudiant> findEtudiantByCin (String cin);
+    Etudiant findEtudiantByCin (String cin);
 
 }

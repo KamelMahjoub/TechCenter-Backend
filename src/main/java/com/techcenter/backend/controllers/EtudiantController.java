@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class EtudiantController {
 
     @Autowired
@@ -21,6 +22,12 @@ public class EtudiantController {
         return etudiantRepository.findAll();
     }
 
+ 
+    @GetMapping(value = "/getEtudiantByCin/{cin}")
+    public Etudiant getEtudiantByCin(@PathVariable("cin") String cin) {
+        return etudiantRepository.findEtudiantByCin(cin);
+    }
+
 
     //Supprimer un etudiant par cin
     @DeleteMapping(value = "/SupprimerEtudiant/{cin}")
@@ -29,7 +36,7 @@ public class EtudiantController {
         return "L'étudiant a été supprimé avec succès";
     }
 
-    //Ajouter un étudiant
+    //Ajouter un étudian t 
     @PostMapping(value = "/AjoutEtudiant")
     public String addEtudiant(@RequestBody Etudiant etudiant) {
 
@@ -41,17 +48,17 @@ public class EtudiantController {
     @PutMapping(value="/UpdateEtudiant/{cin}")
     public String updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable String cin)
     {
-        Optional<Etudiant> etudiantData = etudiantRepository.findEtudiantByCin(cin);
-        if(etudiantData.isPresent()) {
-            Etudiant e = etudiantData.get();
-            e.setCin(etudiant.getCin());
-            e.setMot_de_passe(etudiant.getMot_de_passe());
-            e.setNom(etudiant.getNom());
-            e.setPrenom(etudiant.getPrenom());
-            e.setAdresse(etudiant.getAdresse());
-            e.setDate_de_naissance(etudiant.getDate_de_naissance());
-            e.setNum_tel(etudiant.getNum_tel());
-            etudiantRepository.save(e);
+      Etudiant etudiantData = etudiantRepository.findEtudiantByCin(cin);
+        if(etudiantData!=null) {
+           
+        	etudiantData.setCin(etudiant.getCin());
+            etudiantData.setMot_de_passe(etudiant.getMot_de_passe());
+            etudiantData.setNom(etudiant.getNom());
+            etudiantData.setPrenom(etudiant.getPrenom());
+            etudiantData.setAdresse(etudiant.getAdresse());
+            etudiantData.setDate_de_naissance(etudiant.getDate_de_naissance());
+            etudiantData.setNum_tel(etudiant.getNum_tel());
+            etudiantRepository.save(etudiantData);
         }
         return "L'étudiant a été modifié avec succée";
     }
