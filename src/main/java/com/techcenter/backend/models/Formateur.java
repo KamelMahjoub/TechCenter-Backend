@@ -18,7 +18,7 @@ public class Formateur {
     private String email ;
     private String date_de_naissance ;
     private String adresse ;
-    private List<String> num_tel ;
+    private String num_tel ;
     private List<Spécialité> liste_des_spécialités;
 
     public Formateur() {
@@ -29,7 +29,7 @@ public class Formateur {
         this.mot_de_passe = mot_de_passe;
     }
 
-    public Formateur(String id, String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, List<String> num_tel) {
+    public Formateur(String id, String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, String num_tel) {
         this.id = id;
         this.cin = cin;
         this.mot_de_passe = mot_de_passe;
@@ -41,7 +41,7 @@ public class Formateur {
         this.num_tel = num_tel;
     }
 
-    public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email,String date_de_naissance, String adresse, List<String> num_tel, List<Spécialité> liste_des_spécialités) {
+    public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email,String date_de_naissance, String adresse, String num_tel, List<Spécialité> liste_des_spécialités) {
         this.cin = cin;
         this.mot_de_passe = mot_de_passe;
         this.nom = nom;
@@ -117,11 +117,11 @@ public class Formateur {
         this.adresse = adresse;
     }
 
-    public List<String> getNum_tel() {
+    public String getNum_tel() {
         return num_tel;
     }
 
-    public void setNum_tel(List<String> num_tel) {
+    public void setNum_tel(String num_tel) {
         this.num_tel = num_tel;
     }
 
