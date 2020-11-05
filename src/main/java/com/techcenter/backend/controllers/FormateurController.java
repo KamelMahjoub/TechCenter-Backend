@@ -1,5 +1,6 @@
 package com.techcenter.backend.controllers;
 
+import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formateur;
 import com.techcenter.backend.repositories.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,19 +52,23 @@ public class FormateurController {
     @PutMapping(value="/UpdateFormateur/{cin}")
     public String updateFormateur(@RequestBody Formateur formateur, @PathVariable String cin)
     {
-        Optional<Formateur> formateurData = formateurRepository.findFormateurByCin(cin);
-       if(formateurData.isPresent()) {
-           Formateur f = formateurData.get();
-           f.setCin(formateur.getCin());
-           f.setMot_de_passe(formateur.getMot_de_passe());
-           f.setNom(formateur.getNom());
-           f.setPrenom(formateur.getPrenom());
-           f.setAdresse(formateur.getAdresse());
-           f.setDate_de_naissance(formateur.getDate_de_naissance());
-           f.setNum_tel(formateur.getNum_tel());
-           formateurRepository.save(f);
+        Formateur formateurData = formateurRepository.findFormateurByCin(cin);
+       if(formateurData!=null) {
+           formateurData.setCin(formateur.getCin());
+           formateurData.setMot_de_passe(formateur.getMot_de_passe());
+           formateurData.setNom(formateur.getNom());
+           formateurData.setPrenom(formateur.getPrenom());
+           formateurData.setAdresse(formateur.getAdresse());
+           formateurData.setDate_de_naissance(formateur.getDate_de_naissance());
+           formateurData.setNum_tel(formateur.getNum_tel());
+           formateurRepository.save(formateurData);
        }
         return "Le formateur a été modifié avec succée";
+    }
+
+    @GetMapping(value = "/getFormateurByCin/{cin}")
+    public Formateur getFormateurtByCin(@PathVariable("cin") String cin) {
+        return formateurRepository.findFormateurByCin(cin);
     }
 
 

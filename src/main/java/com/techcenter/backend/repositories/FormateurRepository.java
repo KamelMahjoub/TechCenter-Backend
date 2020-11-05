@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface FormateurRepository extends MongoRepository<Formateur,Long> {
 
     String deleteFormateurByCin(String cin);
-    Optional<Formateur> findFormateurByCin (String cin);
+    Formateur findFormateurByCin (String cin);
 }
