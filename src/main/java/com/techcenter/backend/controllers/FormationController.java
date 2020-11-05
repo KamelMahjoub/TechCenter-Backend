@@ -21,8 +21,14 @@ public class FormationController {
 
     //Liste des formations
     @GetMapping(value = "/ListedesFormations")
-    public List<Formation> getAllFormateurs() {
+    public List<Formation> getAllFormations() {
         return formationRepository.findAll();
+    }
+
+  //Liste des formations
+    @GetMapping(value = "/getFormationById/{id}")
+    public Formation getFormationById(@PathVariable("id")   String id) {
+        return formationRepository.findFormationById(id);
     }
 
     //Supprimer une formation par id
@@ -52,14 +58,13 @@ public class FormationController {
     @PutMapping(value="/UpdateFormation/{id}")
     public String updateFormation(@RequestBody Formation formation, @PathVariable String id)
     {
-        Optional<Formation> formationData = formationRepository.findFormationById(id);
-        if(formationData.isPresent()) {
-            Formation f = formationData.get();
-            f.setTitre(formation.getTitre());
-            f.setDescription(formation.getDescription());
-            f.setNiveau(formation.getNiveau());
-            f.setMatiéres(formation.getMatiéres());
-            formationRepository.save(f);
+        Formation formationData = formationRepository.findFormationById(id);
+        if(formationData!=null) {
+        	formationData.setTitre(formation.getTitre());
+        	formationData.setDescription(formation.getDescription());
+        	formationData.setNiveau(formation.getNiveau());
+        	formationData.setMatiéres(formation.getMatiéres());
+            formationRepository.save(formationData);
         }
         return "La formation a été modifiée avec succée";
     }

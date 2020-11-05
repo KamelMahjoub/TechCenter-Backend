@@ -50,7 +50,6 @@ public class EtudiantController {
     {
       Etudiant etudiantData = etudiantRepository.findEtudiantByCin(cin);
         if(etudiantData!=null) {
-           
         	etudiantData.setCin(etudiant.getCin());
             etudiantData.setMot_de_passe(etudiant.getMot_de_passe());
             etudiantData.setNom(etudiant.getNom());
