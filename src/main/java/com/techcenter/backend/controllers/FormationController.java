@@ -30,6 +30,10 @@ public class FormationController {
     public Formation getFormationById(@PathVariable("id")   String id) {
         return formationRepository.findFormationById(id);
     }
+    
+    
+    
+    
 
     //Supprimer une formation par id
     @DeleteMapping(value ="/SupprimerFormation/{id}")

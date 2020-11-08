@@ -6,6 +6,7 @@ import com.techcenter.backend.models.Session;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.Optional;
 
 
@@ -13,5 +14,7 @@ import java.util.Optional;
 public interface SessionRepository extends MongoRepository<Session,Long> {
 
     String deleteSessionById(String id);
-    Optional<Session> findSessionById(String id);
+    Session findSessionById(String id);
+   /* List<Session> findSessionByIdFormateur(String id);
+    List<Session> findSessionByIdEtudiant(String id);*/
 }

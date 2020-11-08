@@ -1,6 +1,7 @@
 package com.techcenter.backend.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -14,7 +15,16 @@ public class Formation {
     private String description;
     private String niveau;
     private List<String> matiéres;
+    
+    public List<Session> getListeDesSession() {
+		return listeDesSession;
+	}
 
+	public void setListeDesSession(List<Session> listeDesSession) {
+		this.listeDesSession = listeDesSession;
+	}
+
+	private List<Session> listeDesSession;
 
     public Formation() {
     }
