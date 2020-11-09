@@ -1,8 +1,12 @@
 package com.techcenter.backend.controllers;
 
+import com.techcenter.backend.models.Affecter;
 import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formateur;
+import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.FormateurRepository;
+import com.techcenter.backend.repositories.FormationRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +21,11 @@ public class FormateurController {
 
     @Autowired
     public FormateurRepository formateurRepository;
+    
+
+    @Autowired
+    public FormationRepository formationRepository;
+
 
 
     //Liste des formateurs
@@ -70,6 +79,32 @@ public class FormateurController {
     public Formateur getFormateurtByCin(@PathVariable("cin") String cin) {
         return formateurRepository.findFormateurByCin(cin);
     }
+    @PostMapping(value ="/AffecterFomateur")
+    public String AffecterFomateur(@RequestBody Affecter affecter) {
+
+    	Formateur formateur=formateurRepository.findFormateurByCin(affecter.getNomFormateur());
+    	Session session=formationRepository.findFormationById(affecter.getTitreFormation()).getListeDesSession().get(affecter.getSaisonFormation());
+    	
+    	 List<Session> listeSessions = formateur.getListeDesSessions();
+    	 if(listeSessions!=null)
+    	 {
+    		 listeSessions.add(session);
+    	 }
+    	 else
+    	 {
+    		  listeSessions = new ArrayList<Session>();
+    		
+    		  listeSessions.add(session);
+    		 
+    	 }
+    	
+    	 formateur.setListeDesSessions(listeSessions);
+    	 formateurRepository.save(formateur);
+    	
+    //    Formateur insertedFormateur = formateurRepository.insert(formateur);
+        return "Le formateur a été ajouté avec succès!" ;
+    }
+   
 
 
 }

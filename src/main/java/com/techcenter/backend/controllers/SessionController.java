@@ -38,6 +38,12 @@ public class SessionController {
         return formation.getListeDesSession().get(id2);
     }
     
+    @GetMapping(value = "/getSessionByIdFormation/{id}")
+    public List<Session> getSessionByIdFormation(@PathVariable("id") String id) {
+    Formation formation=	formationRepository.findFormationById(id);
+    
+        return formation.getListeDesSession();
+    }
     
     @GetMapping(value = "/getSessionByIdFormateur/{id}")
     public List<Session> getSessionByIdFormateur(@PathVariable("id") String id) {

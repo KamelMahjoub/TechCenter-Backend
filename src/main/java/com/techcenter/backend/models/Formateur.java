@@ -20,6 +20,15 @@ public class Formateur {
     private String adresse ;
     private String num_tel ;
     private List<Spécialité> liste_des_spécialités;
+    public List<Session> getListeDesSessions() {
+		return listeDesSessions;
+	}
+
+	public void setListeDesSessions(List<Session> listeDesSessions) {
+		this.listeDesSessions = listeDesSessions;
+	}
+
+	private List<Session> listeDesSessions;
 
     public Formateur() {
     }
