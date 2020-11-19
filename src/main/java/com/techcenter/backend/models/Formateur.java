@@ -20,15 +20,7 @@ public class Formateur {
     private String adresse ;
     private String num_tel ;
     private List<Spécialité> liste_des_spécialités;
-    public List<Session> getListeDesSessions() {
-		return listeDesSessions;
-	}
-
-	public void setListeDesSessions(List<Session> listeDesSessions) {
-		this.listeDesSessions = listeDesSessions;
-	}
-
-	private List<Session> listeDesSessions;
+    private List<Session> listeDesSessions;
 
     public Formateur() {
     }
@@ -141,4 +133,14 @@ public class Formateur {
     public void setListe_des_spécialités(List<Spécialité> liste_des_spécialités) {
         this.liste_des_spécialités = liste_des_spécialités;
     }
+
+    public List<Session> getListeDesSessions() {
+        return listeDesSessions;
+    }
+
+    public void setListeDesSessions(List<Session> listeDesSessions) {
+        this.listeDesSessions = listeDesSessions;
+    }
+
+
 }

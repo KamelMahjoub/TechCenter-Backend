@@ -1,7 +1,6 @@
 package com.techcenter.backend.controllers;
 
 import com.techcenter.backend.models.Affecter;
-import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formateur;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.FormateurRepository;
@@ -10,10 +9,8 @@ import com.techcenter.backend.repositories.FormationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,12 +18,8 @@ public class FormateurController {
 
     @Autowired
     public FormateurRepository formateurRepository;
-    
-
     @Autowired
     public FormationRepository formationRepository;
-
-
 
     //Liste des formateurs
     @GetMapping(value = "/ListedesFormateurs")
@@ -83,7 +76,7 @@ public class FormateurController {
     public String AffecterFomateur(@RequestBody Affecter affecter) {
 
     	Formateur formateur=formateurRepository.findFormateurByCin(affecter.getNomFormateur());
-    	Session session=formationRepository.findFormationById(affecter.getTitreFormation()).getListeDesSession().get(affecter.getSaisonFormation());
+    	Session session=formationRepository.findFormationById(affecter.getTitreFormation()).getListeDesSession().get(affecter.getSessionFormation());
     	
     	 List<Session> listeSessions = formateur.getListeDesSessions();
     	 if(listeSessions!=null)
@@ -104,7 +97,15 @@ public class FormateurController {
     //    Formateur insertedFormateur = formateurRepository.insert(formateur);
         return "Le formateur a été ajouté avec succès!" ;
     }
-   
+
+
+    //Liste des sessions par cin
+    @GetMapping(value = "/getListeSessionsFormateurs/{cin}")
+    public List<Session> getListeSessionsFormateurs(@PathVariable("cin") String cin) {
+
+        List<Session> liste_des_sessions =  formateurRepository.findFormateurByCin(cin).getListeDesSessions();
+        return liste_des_sessions;
+    }
 
 
 }

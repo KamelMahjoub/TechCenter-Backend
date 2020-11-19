@@ -1,7 +1,6 @@
 package com.techcenter.backend.controllers;
 
 
-import com.techcenter.backend.models.Formateur;
 import com.techcenter.backend.models.Formation;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.FormationRepository;
@@ -10,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -58,12 +53,12 @@ public class SessionController {
     	
    
     }
-    /*
-    @GetMapping(value = "/getSessionByIdEtudiant/{id}")
-    public List<Session> getSessionByIdEtudiant(@PathVariable("id") String id) {
-        return sessionRepository.findSessionByIdEtudiant(id);
-    }
-*/
+
+ /*   @GetMapping(value = "/getSessionByIdEtudiant/{cin}")
+    public List<Session> getSessionByIdEtudiant(@PathVariable("cin") String cin) {
+        return sessionRepository.findSessionByCin(cin);
+    }*/
+
     //Supprimer une session
     @DeleteMapping(value ="/SupprimerSession/{id}/{index}")
     public String deleteSession(@PathVariable("id")   String id,@PathVariable("index")   int id2)
@@ -89,7 +84,7 @@ public class SessionController {
     	
     	Session s=sessionRepository.save(session);
     	
-    	Formation formation=   formationRepository.findFormationById(id);
+    	Formation formation= formationRepository.findFormationById(id);
          if(formation!=null)
          {
         	 List<Session> listeSessions = formation.getListeDesSession();

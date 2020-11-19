@@ -3,7 +3,9 @@ package com.techcenter.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "etudiants")
+import java.util.List;
+
+@Document(collection = "étudiants")
 public class Etudiant {
 
     @Id
@@ -16,6 +18,7 @@ public class Etudiant {
     private String date_de_naissance ;
     private String adresse ;
     private String num_tel ;
+    public List<Session> liste_des_sessions;
 
     public Etudiant() {
     }
@@ -106,6 +109,14 @@ public class Etudiant {
 
     public void setNum_tel(String num_tel) {
         this.num_tel = num_tel;
+    }
+
+    public List<Session> getListe_des_session() {
+        return liste_des_sessions;
+    }
+
+    public void setListe_des_session(List<Session> liste_des_session) {
+        this.liste_des_sessions = liste_des_session;
     }
 }
 

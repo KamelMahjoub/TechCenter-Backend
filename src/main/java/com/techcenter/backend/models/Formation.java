@@ -15,16 +15,10 @@ public class Formation {
     private String description;
     private String niveau;
     private List<String> matiéres;
-    
-    public List<Session> getListeDesSession() {
-		return listeDesSession;
-	}
+    private List<Session> listeDesSessions;
 
-	public void setListeDesSession(List<Session> listeDesSession) {
-		this.listeDesSession = listeDesSession;
-	}
 
-	private List<Session> listeDesSession;
+
 
     public Formation() {
     }
@@ -75,4 +69,14 @@ public class Formation {
     public void setMatiéres(List<String> matiéres) {
         this.matiéres = matiéres;
     }
+    public List<Session> getListeDesSession() {
+        return listeDesSessions;
+    }
+
+    public void setListeDesSession(List<Session> listeDesSession) {
+        this.listeDesSessions = listeDesSession;
+    }
+
+
+
 }

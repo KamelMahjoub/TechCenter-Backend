@@ -1,14 +1,12 @@
 package com.techcenter.backend.controllers;
 
 
-import com.techcenter.backend.models.Formateur;
 import com.techcenter.backend.models.Formation;
 import com.techcenter.backend.repositories.FormationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -25,15 +23,11 @@ public class FormationController {
         return formationRepository.findAll();
     }
 
-  //Liste des formations
+  //Liste des formations par id
     @GetMapping(value = "/getFormationById/{id}")
     public Formation getFormationById(@PathVariable("id")   String id) {
         return formationRepository.findFormationById(id);
     }
-    
-    
-    
-    
 
     //Supprimer une formation par id
     @DeleteMapping(value ="/SupprimerFormation/{id}")
@@ -73,6 +67,13 @@ public class FormationController {
         return "La formation a été modifiée avec succée";
     }
 
+    //Liste des formations par titre
+    @GetMapping(value = "/getFormationByTitre/{titre}")
+    public List<Formation> getFormationsByTitre(@PathVariable("titre")   String titre) {
+
+        List<Formation> résultat_de_la_recherche = formationRepository.findFormationsByTitre(titre);
+        return résultat_de_la_recherche ;
+    }
 
 
 

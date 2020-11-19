@@ -1,13 +1,13 @@
 package com.techcenter.backend.controllers;
 
 import com.techcenter.backend.models.Etudiant;
-import com.techcenter.backend.models.Formateur;
+import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.EtudiantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -61,6 +61,18 @@ public class EtudiantController {
         }
         return "L'étudiant a été modifié avec succée";
     }
+
+
+    //Liste des sessions par cin
+    @GetMapping(value = "/getListeSessionsEtudiant/{cin}")
+    public List<Session> getListeSessionsEtudiant(@PathVariable("cin") String cin) {
+        List<Session> liste_des_sessions =  etudiantRepository.findEtudiantByCin(cin).getListe_des_session();
+        return liste_des_sessions;
+    }
+
+
+
+
 
 }
 
