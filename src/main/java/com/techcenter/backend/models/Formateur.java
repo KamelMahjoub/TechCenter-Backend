@@ -12,7 +12,7 @@ public class Formateur {
     @Id
     private String id;
     private String cin ;
-    private String mot_de_passe ;
+    private String motdepasse ;
     private String nom ;
     private String prenom ;
     private String email ;
@@ -27,13 +27,13 @@ public class Formateur {
 
     public Formateur(String cin, String mot_de_passe) {
         this.cin = cin;
-        this.mot_de_passe = mot_de_passe;
+        this.motdepasse = mot_de_passe;
     }
 
     public Formateur(String id, String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, String num_tel) {
         this.id = id;
         this.cin = cin;
-        this.mot_de_passe = mot_de_passe;
+        this.motdepasse = mot_de_passe;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -44,7 +44,7 @@ public class Formateur {
 
     public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email,String date_de_naissance, String adresse, String num_tel, List<Spécialité> liste_des_spécialités) {
         this.cin = cin;
-        this.mot_de_passe = mot_de_passe;
+        this.motdepasse = mot_de_passe;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -71,11 +71,11 @@ public class Formateur {
     }
 
     public String getMot_de_passe() {
-        return mot_de_passe;
+        return motdepasse;
     }
 
     public void setMot_de_passe(String mot_de_passe) {
-        this.mot_de_passe = mot_de_passe;
+        this.motdepasse = mot_de_passe;
     }
 
     public String getNom() {

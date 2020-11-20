@@ -3,7 +3,9 @@ package com.techcenter.backend.controllers;
 import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.EtudiantRepository;
+import com.techcenter.backend.repositories.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class EtudiantController {
     @Autowired
     public EtudiantRepository etudiantRepository;
 
+
+
+
     //Liste des etudiants
     @GetMapping(value = "/ListedesEtudiants")
     public List<Etudiant> getAllFormateurs() {
@@ -26,6 +31,11 @@ public class EtudiantController {
     @GetMapping(value = "/getEtudiantByCin/{cin}")
     public Etudiant getEtudiantByCin(@PathVariable("cin") String cin) {
         return etudiantRepository.findEtudiantByCin(cin);
+    }
+
+    @GetMapping(value = "/getEtudiantByEmail/{email}")
+    public Etudiant getEtudiantByEmail(@PathVariable("email") String email) {
+        return etudiantRepository.findEtudiantByEmail(email);
     }
 
 
@@ -69,7 +79,6 @@ public class EtudiantController {
         List<Session> liste_des_sessions =  etudiantRepository.findEtudiantByCin(cin).getListe_des_session();
         return liste_des_sessions;
     }
-
 
 
 

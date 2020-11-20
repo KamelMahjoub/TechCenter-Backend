@@ -1,6 +1,7 @@
 package com.techcenter.backend.controllers;
 
 import com.techcenter.backend.models.Affecter;
+import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formateur;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.FormateurRepository;
@@ -105,6 +106,11 @@ public class FormateurController {
 
         List<Session> liste_des_sessions =  formateurRepository.findFormateurByCin(cin).getListeDesSessions();
         return liste_des_sessions;
+    }
+
+    @GetMapping(value = "/getFormateurByEmail/{email}")
+    public Formateur getFormateurByEmail(@PathVariable("email") String email) {
+        return formateurRepository.getFormateurByEmail(email);
     }
 
 
