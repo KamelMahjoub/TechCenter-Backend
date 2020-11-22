@@ -6,6 +6,7 @@ import com.techcenter.backend.repositories.FormationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.Query;
 import java.util.List;
 
 @RestController
@@ -74,6 +75,14 @@ public class FormationController {
         List<Formation> résultat_de_la_recherche = formationRepository.findFormationsByTitre(titre);
         return résultat_de_la_recherche ;
     }
+
+    //Liste des formations par titre qui contient
+    @GetMapping(value = "/getFormationByTitres/{titre}")
+    public List<Formation> getFormationsByTitres(@PathVariable("titre")   String titre) {
+        List<Formation> résultat_de_la_recherche = formationRepository.findAllByTitreContaining(titre);
+        return résultat_de_la_recherche ;
+    }
+
 
 
 

@@ -14,4 +14,6 @@ public interface FormationRepository extends MongoRepository<Formation,Long> {
     String deleteFormationsById(String id);
    Formation findFormationById(String id);
    List<Formation> findFormationsByTitre(String titre);
+    List<Formation> findAllByTitreContaining(String titre);
+
 }
