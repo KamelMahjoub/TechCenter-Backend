@@ -83,7 +83,4 @@ public class FormationController {
         return résultat_de_la_recherche ;
     }
 
-
-
-
 }

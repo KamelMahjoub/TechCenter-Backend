@@ -16,4 +16,6 @@ public interface FormationRepository extends MongoRepository<Formation,Long> {
    List<Formation> findFormationsByTitre(String titre);
     List<Formation> findAllByTitreContaining(String titre);
 
+
+
 }

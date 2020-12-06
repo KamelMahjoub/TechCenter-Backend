@@ -35,14 +35,14 @@ public class LoginController {
             else
             {
                 f = formateurRepository.getFormateurByEmail(email);
-                return f;
+                return "formateur"+f;
             }
 
         }
         else
         {
             e = etudiantRepository.findEtudiantByEmail(email);
-            return e ;
+            return "etudiant"+e ;
         }
     }
 }
