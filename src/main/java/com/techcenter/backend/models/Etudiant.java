@@ -18,9 +18,11 @@ public class Etudiant {
     private String date_de_naissance ;
     private String adresse ;
     private String num_tel ;
+    private String type;
     public List<Session> liste_des_sessions;
 
     public Etudiant() {
+        this.type="etudiant";
     }
 
     public Etudiant(String cin, String mot_de_passe) {
@@ -118,6 +120,14 @@ public class Etudiant {
 
     public void setListe_des_session(List<Session> liste_des_session) {
         this.liste_des_sessions = liste_des_session;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 

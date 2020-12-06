@@ -19,19 +19,22 @@ public class Formateur {
     private String date_de_naissance ;
     private String adresse ;
     private String num_tel ;
+    private String type;
     private List<Spécialité> liste_des_spécialités;
     private List<Session> listeDesSessions;
 
     public Formateur() {
+        this.type="formateur";
     }
 
     public Formateur(String cin, String mot_de_passe) {
         this.cin = cin;
         this.motdepasse = mot_de_passe;
+        this.type="formateur";
     }
 
-    public Formateur(String id, String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, String num_tel) {
-        this.id = id;
+    public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email, String date_de_naissance, String adresse, String num_tel) {
+
         this.cin = cin;
         this.motdepasse = mot_de_passe;
         this.nom = nom;
@@ -40,7 +43,9 @@ public class Formateur {
         this.date_de_naissance = date_de_naissance;
         this.adresse = adresse;
         this.num_tel = num_tel;
+        this.type="formateur";
     }
+
 
     public Formateur(String cin, String mot_de_passe, String nom, String prenom, String email,String date_de_naissance, String adresse, String num_tel, List<Spécialité> liste_des_spécialités) {
         this.cin = cin;
@@ -52,6 +57,8 @@ public class Formateur {
         this.adresse = adresse;
         this.num_tel = num_tel;
         this.liste_des_spécialités = liste_des_spécialités;
+        this.type="formateur";
+
     }
 
     public String getId() {
@@ -142,5 +149,11 @@ public class Formateur {
         this.listeDesSessions = listeDesSessions;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 }

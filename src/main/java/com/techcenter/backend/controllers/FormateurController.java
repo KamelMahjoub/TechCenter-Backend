@@ -49,6 +49,7 @@ public class FormateurController {
     public String addFormateur(@RequestBody Formateur formateur) {
 
         Formateur insertedFormateur = formateurRepository.insert(formateur);
+
         return "Le formateur a été ajouté avec succès!" ;
     }
 //Modifier un formateur
