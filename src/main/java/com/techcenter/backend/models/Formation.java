@@ -14,9 +14,9 @@ public class Formation {
     private String titre ;
     private String description;
     private String niveau;
+    private String image;
     private List<String> matiéres;
     private List<Session> listeDesSessions;
-
 
 
 
@@ -77,6 +77,12 @@ public class Formation {
         this.listeDesSessions = listeDesSession;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
 }

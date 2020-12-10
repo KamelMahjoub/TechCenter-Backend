@@ -1,11 +1,14 @@
 package com.techcenter.backend.controllers;
 
 
+import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formation;
 import com.techcenter.backend.models.Session;
+import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormationRepository;
 import com.techcenter.backend.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +22,9 @@ public class SessionController {
     public SessionRepository sessionRepository;
     @Autowired
     public FormationRepository formationRepository;
+    @Autowired
+    public EtudiantRepository etudiantRepository;
+
 
     //Liste des sessions
     @GetMapping(value = "/ListedesSessions")
@@ -54,10 +60,7 @@ public class SessionController {
    
     }
 
- /*   @GetMapping(value = "/getSessionByIdEtudiant/{cin}")
-    public List<Session> getSessionByIdEtudiant(@PathVariable("cin") String cin) {
-        return sessionRepository.findSessionByCin(cin);
-    }*/
+
 
     //Supprimer une session
     @DeleteMapping(value ="/SupprimerSession/{id}/{index}")
@@ -124,6 +127,27 @@ public class SessionController {
         return "La session a été modifié avec succée";
     }
 
+
+    //Inscription etudiant
+    @PutMapping(value="/InscriptionEtudiant/{idformation}/{idsession}/{idetudiant}")
+    public String InscriptionEtudiant(@RequestBody Session session,@PathVariable String idformation, @PathVariable int idsession , @PathVariable String idetudiant)
+    {
+        Etudiant e = etudiantRepository.findEtudiantById(idetudiant);
+        Formation f = formationRepository.findFormationById(idformation);
+        Session s = f.getListeDesSession().get(idsession);
+        if(s.getNb_inscrits()==s.getNb_places())
+            return "la session a déja le nombre maximum d'inscriptions";
+        else
+        {
+            e.getListe_des_session().add(s);
+            s.getListe_des_etudiants().add(e);
+            s.setNb_inscrits(s.getNb_inscrits()+1);
+            return "Inscription réussite";
+        }
+
+
+
+    }
 
 
 }

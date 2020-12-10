@@ -73,10 +73,10 @@ public class EtudiantController {
     }
 
 
-    //Liste des sessions par cin
-    @GetMapping(value = "/getListeSessionsEtudiant/{cin}")
-    public List<Session> getListeSessionsEtudiant(@PathVariable("cin") String cin) {
-        List<Session> liste_des_sessions =  etudiantRepository.findEtudiantByCin(cin).getListe_des_session();
+    //Liste des sessions par ID
+    @GetMapping(value = "/getListeSessionsEtudiant/{id}")
+    public List<Session> getListeSessionsEtudiant(@PathVariable("id") String id) {
+        List<Session> liste_des_sessions =  etudiantRepository.findEtudiantById(id).getListe_des_session();
         return liste_des_sessions;
     }
 

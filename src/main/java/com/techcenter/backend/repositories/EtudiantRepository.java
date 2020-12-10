@@ -11,8 +11,7 @@ public interface EtudiantRepository extends MongoRepository<Etudiant,Long> {
 
     String deleteEtudiantByCin(String cin);
     Etudiant findEtudiantByCin (String cin);
+    Etudiant findEtudiantById(String id);
     Etudiant findEtudiantByEmail(String email);
     Etudiant  getEtudiantByEmailAndMotdepasse(String email,String mot_de_passe);
-
-
 }
