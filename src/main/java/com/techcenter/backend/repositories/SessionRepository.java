@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface SessionRepository extends MongoRepository<Session,Long> {
 
-    String InscriptionEtudiant(String idformation , int idsession, String idetudiant);
+   // String InscriptionEtudiant(String idformation , int idsession, String idetudiant);
 
 }
