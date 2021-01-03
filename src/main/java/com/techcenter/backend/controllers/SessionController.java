@@ -18,10 +18,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class SessionController {
 
-    @Autowired
-    public SessionRepository sessionRepository;
+
     @Autowired
     public FormationRepository formationRepository;
+    @Autowired
+    public SessionRepository sessionRepository;
     @Autowired
     public EtudiantRepository etudiantRepository;
 
