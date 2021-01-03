@@ -1,6 +1,7 @@
 package com.techcenter.backend.controllers;
 
 import com.techcenter.backend.models.Etudiant;
+import com.techcenter.backend.models.Password;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormateurRepository;
@@ -55,13 +56,13 @@ public class EtudiantController {
     }
 
     //Modifier un etudiant
-    @PutMapping(value="/UpdateEtudiant/{cin}")
-    public String updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable String cin)
+    @PutMapping(value="/UpdateEtudiant/{id}")
+    public String updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable String id)
     {
-      Etudiant etudiantData = etudiantRepository.findEtudiantByCin(cin);
+      Etudiant etudiantData = etudiantRepository.findEtudiantById(id);
         if(etudiantData!=null) {
         	etudiantData.setCin(etudiant.getCin());
-            etudiantData.setMot_de_passe(etudiant.getMot_de_passe());
+            if(etudiant.getMot_de_passe()!=null){ etudiantData.setMot_de_passe(etudiant.getMot_de_passe());}
             etudiantData.setNom(etudiant.getNom());
             etudiantData.setPrenom(etudiant.getPrenom());
             etudiantData.setAdresse(etudiant.getAdresse());
@@ -69,6 +70,22 @@ public class EtudiantController {
             etudiantData.setNum_tel(etudiant.getNum_tel());
             etudiantRepository.save(etudiantData);
         }
+        return "L'étudiant a été modifié avec succée";
+    }
+    //Modifier mot de passe d un etudiant
+    @PutMapping(value="/UpdatePassword/{id}")
+    public String UpdatePassword(@RequestBody Password passwordEtudiant, @PathVariable String id)
+    {
+        System.out.println("test");
+        Etudiant etudiantData = etudiantRepository.findEtudiantById(id);
+        if(etudiantData!=null)
+        {
+            if(etudiantData.getMot_de_passe().equals(passwordEtudiant.getOldPassword())) {
+                etudiantData.setMot_de_passe(passwordEtudiant.getNewPassword());
+                etudiantRepository.save(etudiantData);
+            }
+        }
+
         return "L'étudiant a été modifié avec succée";
     }
 
