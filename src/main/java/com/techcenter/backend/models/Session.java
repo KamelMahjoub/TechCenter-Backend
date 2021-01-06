@@ -3,6 +3,7 @@ package com.techcenter.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "sessions")
@@ -14,23 +15,6 @@ public class Session {
     private String date_de_début ;
     private String date_de_fin ;
     private String niveau ;
-
-    public String getNiveau() {
-        return niveau;
-    }
-
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
-    }
-
-    public float getPrix() {
-        return prix;
-    }
-
-    public void setPrix(float prix) {
-        this.prix = prix;
-    }
-
     private float prix ;
     private int nb_places ;
     private int nb_inscrits;
@@ -45,6 +29,9 @@ public class Session {
     }
 
     public Session() {
+        liste_des_etudiants = new ArrayList<Etudiant>();
+        liste_de_formateurs = new ArrayList<Formateur>();
+
     }
 
     public String getId() {
@@ -109,5 +96,21 @@ public class Session {
 
     public void setListe_des_etudiants(List<Etudiant> liste_des_etudiants) {
         this.liste_des_etudiants = liste_des_etudiants;
+    }
+
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
+    }
+
+    public float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(float prix) {
+        this.prix = prix;
     }
 }

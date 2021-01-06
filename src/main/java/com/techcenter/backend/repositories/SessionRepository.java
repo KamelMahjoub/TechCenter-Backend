@@ -14,5 +14,7 @@ import java.util.List;
 @Repository
 public interface SessionRepository extends MongoRepository<Session,Long> {
 
+    Session findSessionById(String id);
+
 
 }

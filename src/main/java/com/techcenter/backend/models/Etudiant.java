@@ -3,6 +3,7 @@ package com.techcenter.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "étudiants")
@@ -23,6 +24,7 @@ public class Etudiant {
 
     public Etudiant() {
         this.type="etudiant";
+        this.liste_des_sessions = new ArrayList<Session>();
     }
 
     public Etudiant(String cin, String mot_de_passe) {

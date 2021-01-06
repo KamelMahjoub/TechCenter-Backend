@@ -130,19 +130,20 @@ public class SessionController {
 
 
     //Inscription etudiant
-    @PutMapping(value="/InscriptionEtudiant/{idformation}/{idsession}/{idetudiant}")
-    public String InscriptionEtudiant(@RequestBody Session session,@PathVariable String idformation, @PathVariable int idsession , @PathVariable String idetudiant)
+    @PutMapping(value="/InscriptionEtudiant/{idsession}/{idetudiant}")
+    public String InscriptionEtudiant(@PathVariable String idsession , @PathVariable String idetudiant)
     {
         Etudiant e = etudiantRepository.findEtudiantById(idetudiant);
-        Formation f = formationRepository.findFormationById(idformation);
-        Session s = f.getListeDesSession().get(idsession);
+        Session s = sessionRepository.findSessionById(idsession);
         if(s.getNb_inscrits()==s.getNb_places())
             return "la session a déja le nombre maximum d'inscriptions";
         else
         {
             e.getListe_des_session().add(s);
-            s.getListe_des_etudiants().add(e);
+            s.getListe_des_etudiants().add(etudiantRepository.findEtudiantById(idetudiant));
             s.setNb_inscrits(s.getNb_inscrits()+1);
+            sessionRepository.save(s);
+            etudiantRepository.save(e);
             return "Inscription réussite";
         }
 
