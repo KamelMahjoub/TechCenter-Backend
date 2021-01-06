@@ -13,10 +13,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class FormationController {
 
-
     @Autowired
     public FormationRepository formationRepository;
-
 
     //Liste des formations
     @GetMapping(value = "/ListedesFormations")
@@ -31,6 +29,7 @@ public class FormationController {
     }
 
     //Supprimer une formation par id
+
     @DeleteMapping(value ="/SupprimerFormation/{id}")
     public String deleteFormation(@PathVariable("id")   String id)
     {

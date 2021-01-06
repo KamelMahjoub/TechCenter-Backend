@@ -13,6 +13,25 @@ public class Session {
     private String nom_du_session ;
     private String date_de_début ;
     private String date_de_fin ;
+    private String niveau ;
+
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
+    }
+
+    public float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
+
+    private float prix ;
     private int nb_places ;
     private int nb_inscrits;
     private List<Formateur> liste_de_formateurs;
