@@ -152,4 +152,18 @@ public class SessionController {
     }
 
 
+    @GetMapping(value = "/getSessionByIdEtudiant/{id}")
+    public List<Session> getSessionByIdEtudiant(@PathVariable("id") String id) {
+
+        try {
+            return etudiantRepository.findEtudiantById(id).getListe_des_session();
+        }
+        catch(NullPointerException nullPointerException)
+        {
+            return null;
+        }
+
+
+    }
+
 }
