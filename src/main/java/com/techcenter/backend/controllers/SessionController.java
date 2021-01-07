@@ -32,7 +32,12 @@ public class SessionController {
     public List<Session> getAllSessions() {
         return sessionRepository.findAll();
     }
-    
+    //Liste des sessions par etudiant
+    @GetMapping(value = "/getSessionByIdEtudiant/{id}")
+    public List<Session> getSessionByIdEtudiant(@PathVariable("id") String id) {
+        return etudiantRepository.findEtudiantById(id).getListe_des_session();
+    }
+
     @GetMapping(value = "/getSessionById/{id}/{id2}")
     public Session getSessionById(@PathVariable("id") String id,@PathVariable("id2") int id2) {
     Formation formation=	formationRepository.findFormationById(id);
