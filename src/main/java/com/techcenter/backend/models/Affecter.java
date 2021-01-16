@@ -2,29 +2,23 @@ package com.techcenter.backend.models;
 
 public class Affecter {
 
-    private String titreFormation;
-    private String nomFormateur;
-    private int sessionFormation;
-
-    public String getTitreFormation() {
-        return titreFormation;
-    }
-    public void setTitreFormation(String titreFormation) {
-        this.titreFormation = titreFormation;
-    }
-    public String getNomFormateur() {
-        return nomFormateur;
-    }
-    public void setNomFormateur(String nomFormateur) {
-        this.nomFormateur = nomFormateur;
-    }
-    public int getSessionFormation() {
-        return sessionFormation;
-    }
-    public void setSessionFormation(int saisonFormation) {
-        this.sessionFormation = saisonFormation;
-    }
+    private String idSession;
+    private String idFormateur;
 
 
+    public String getIdSession() {
+        return idSession;
+    }
 
+    public void setIdSession(String idSession) {
+        this.idSession = idSession;
+    }
+
+    public String getIdFormateur() {
+        return idFormateur;
+    }
+
+    public void setIdFormateur(String idFormateur) {
+        this.idFormateur = idFormateur;
+    }
 }

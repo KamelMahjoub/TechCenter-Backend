@@ -21,7 +21,7 @@ public class Formateur {
     private String num_tel ;
     private String type;
     private List<Spécialité> liste_des_spécialités;
-    private List<Session> listeDesSessions;
+
 
     public Formateur() {
         this.type="formateur";
@@ -139,14 +139,6 @@ public class Formateur {
 
     public void setListe_des_spécialités(List<Spécialité> liste_des_spécialités) {
         this.liste_des_spécialités = liste_des_spécialités;
-    }
-
-    public List<Session> getListeDesSessions() {
-        return listeDesSessions;
-    }
-
-    public void setListeDesSessions(List<Session> listeDesSessions) {
-        this.listeDesSessions = listeDesSessions;
     }
 
     public String getType() {

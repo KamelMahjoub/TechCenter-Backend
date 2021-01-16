@@ -14,12 +14,13 @@ public class Session {
     private String nom_du_session ;
     private String date_de_début ;
     private String date_de_fin ;
+    private String idFormation;
     private String niveau ;
     private float prix ;
     private int nb_places ;
     private int nb_inscrits;
-    private List<Formateur> liste_de_formateurs;
-    private List<Etudiant> liste_des_etudiants;
+    private List<String> liste_de_formateurs;
+    private List<String> liste_des_etudiants;
 
     public Session(String nom_du_session, String date_de_début, String date_de_fin, int nb_places) {
         this.nom_du_session = nom_du_session;
@@ -29,8 +30,8 @@ public class Session {
     }
 
     public Session() {
-        liste_des_etudiants = new ArrayList<Etudiant>();
-        liste_de_formateurs = new ArrayList<Formateur>();
+        liste_des_etudiants = new ArrayList<String>();
+        liste_de_formateurs = new ArrayList<String>();
 
     }
 
@@ -82,19 +83,19 @@ public class Session {
         this.nb_inscrits = nb_inscrits;
     }
 
-    public List<Formateur> getListe_de_formateurs() {
+    public List<String> getListe_de_formateurs() {
         return liste_de_formateurs;
     }
 
-    public void setListe_de_formateurs(List<Formateur> liste_de_formateurs) {
+    public void setListe_de_formateurs(List<String> liste_de_formateurs) {
         this.liste_de_formateurs = liste_de_formateurs;
     }
 
-    public List<Etudiant> getListe_des_etudiants() {
+    public List<String> getListe_des_etudiants() {
         return liste_des_etudiants;
     }
 
-    public void setListe_des_etudiants(List<Etudiant> liste_des_etudiants) {
+    public void setListe_des_etudiants(List<String> liste_des_etudiants) {
         this.liste_des_etudiants = liste_des_etudiants;
     }
 
@@ -112,5 +113,13 @@ public class Session {
 
     public void setPrix(float prix) {
         this.prix = prix;
+    }
+
+    public String getIdFormation() {
+        return idFormation;
+    }
+
+    public void setIdFormation(String idFormation) {
+        this.idFormation = idFormation;
     }
 }

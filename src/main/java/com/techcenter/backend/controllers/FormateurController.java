@@ -7,6 +7,7 @@ import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.FormateurRepository;
 import com.techcenter.backend.repositories.FormationRepository;
 
+import com.techcenter.backend.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,8 @@ public class FormateurController {
     public FormateurRepository formateurRepository;
     @Autowired
     public FormationRepository formationRepository;
+    @Autowired
+    public SessionRepository sessionRepository;
 
     //Liste des formateurs
     @GetMapping(value = "/ListedesFormateurs")
@@ -77,36 +80,42 @@ public class FormateurController {
     @PostMapping(value ="/AffecterFomateur")
     public String AffecterFomateur(@RequestBody Affecter affecter) {
 
-    	Formateur formateur=formateurRepository.findFormateurByCin(affecter.getNomFormateur());
-    	Session session=formationRepository.findFormationById(affecter.getTitreFormation()).getListeDesSession().get(affecter.getSessionFormation());
-    	
-    	 List<Session> listeSessions = formateur.getListeDesSessions();
+        Session sessionFormateur=sessionRepository.findSessionById(affecter.getIdSession());
+        List<String> listeSessions =    sessionFormateur.getListe_de_formateurs();
+
     	 if(listeSessions!=null)
     	 {
-    		 listeSessions.add(session);
+    		 listeSessions.add(affecter.getIdFormateur());
     	 }
     	 else
     	 {
-    		  listeSessions = new ArrayList<Session>();
+    		  listeSessions = new ArrayList<String>();
     		
-    		  listeSessions.add(session);
+    		  listeSessions.add(affecter.getIdFormateur());
     		 
     	 }
-    	
-    	 formateur.setListeDesSessions(listeSessions);
-    	 formateurRepository.save(formateur);
+
+        sessionFormateur.setListe_de_formateurs(listeSessions);
+    	 sessionRepository.save(sessionFormateur);
     	
     //    Formateur insertedFormateur = formateurRepository.insert(formateur);
-        return "Le formateur a été ajouté avec succès!" ;
+        return "Le Session a été affecté avec succès!" ;
     }
 
 
     //Liste des sessions par cin
-    @GetMapping(value = "/getListeSessionsFormateurs/{cin}")
-    public List<Session> getListeSessionsFormateurs(@PathVariable("cin") String cin) {
-
-        List<Session> liste_des_sessions =  formateurRepository.findFormateurByCin(cin).getListeDesSessions();
-        return liste_des_sessions;
+    @GetMapping(value = "/getListeSessionsFormateurs/{id}")
+    public List<Session> getListeSessionsFormateurs(@PathVariable("id") String id) {
+        List<Session> sessionList = sessionRepository.findAll();
+        List<Session> sessionFormateur = new ArrayList<>();
+        for(Session s : sessionList)
+        {
+         if(s.getListe_de_formateurs().contains(id))
+         {
+             sessionFormateur.add(s);
+         }
+        }
+        return sessionFormateur;
     }
 
     @GetMapping(value = "/getFormateurByEmail/{email}")

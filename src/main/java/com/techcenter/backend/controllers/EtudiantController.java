@@ -7,8 +7,25 @@ import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 
@@ -41,9 +58,9 @@ public class EtudiantController {
 
 
     //Supprimer un etudiant par cin
-    @DeleteMapping(value = "/SupprimerEtudiant/{cin}")
-    public String deleteEtudiant(@PathVariable("cin") String cin) {
-        etudiantRepository.deleteEtudiantByCin(cin);
+    @DeleteMapping(value = "/SupprimerEtudiant/{id}")
+    public String deleteEtudiant(@PathVariable("id") String id) {
+        etudiantRepository.deleteById(id);
         return "L'étudiant a été supprimé avec succès";
     }
 
@@ -76,7 +93,6 @@ public class EtudiantController {
     @PutMapping(value="/UpdatePassword/{id}")
     public String UpdatePassword(@RequestBody Password passwordEtudiant, @PathVariable String id)
     {
-        System.out.println("test");
         Etudiant etudiantData = etudiantRepository.findEtudiantById(id);
         if(etudiantData!=null)
         {
@@ -90,12 +106,39 @@ public class EtudiantController {
     }
 
 
-    //Liste des sessions par ID
-    @GetMapping(value = "/getListeSessionsEtudiant/{id}")
-    public List<Session> getListeSessionsEtudiant(@PathVariable("id") String id) {
-        List<Session> liste_des_sessions =  etudiantRepository.findEtudiantById(id).getListe_des_session();
-        return liste_des_sessions;
+    @PostMapping(value = "/api/upload")
+    public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/home/dell/Documents/upload/")
+                .path(fileName)
+                .toUriString();
+        return ResponseEntity.ok(fileDownloadUri);
     }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity downloadFileFromLocal(@PathVariable String fileName) {
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
 
 
 
