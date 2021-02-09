@@ -13,6 +13,7 @@ import java.util.List;
 public interface PlaningRepository extends MongoRepository<Planing,Long> {
 
     List<Planing> findByIdSession(String id);
+    List<Planing> findByidFormateur(String id);
     Planing findById(String id);
     boolean deleteById(String  id);
 

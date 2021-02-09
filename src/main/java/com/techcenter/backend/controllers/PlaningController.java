@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,18 @@ public class PlaningController {
         return planingRepository.findByIdSession(id);
     }
 
+
+    //Liste des planing by days
+    @GetMapping(value = "/ListPlaningByDay/{date}/{id}")
+    public List<Planing> ListPlaningByDay(@PathVariable("date") String date, @PathVariable("id") String id) {
+        List<Planing> listFormationByDay=new ArrayList<>();
+        for(Planing planing : planingRepository.findByidFormateur(id))
+                {
+                    if(planing.getDate().equals(date))
+                    listFormationByDay.add(planing);
+                }
+        return listFormationByDay;
+    }
 
     @GetMapping(value = "/getPlaningById/{id}")
     public Planing getPlaningById(@PathVariable("id") String id) {

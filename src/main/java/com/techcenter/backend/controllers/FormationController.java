@@ -1,8 +1,11 @@
 package com.techcenter.backend.controllers;
 
 
+import com.techcenter.backend.models.Etudiant;
 import com.techcenter.backend.models.Formation;
+import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormationRepository;
+import com.techcenter.backend.services.PushNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +15,11 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class FormationController {
-
+   PushNotification pushNotification = new PushNotification();
     @Autowired
     public FormationRepository formationRepository;
+    @Autowired
+    public EtudiantRepository etudiantRepository;
 
     //Liste des formations
     @GetMapping(value = "/ListedesFormations")
@@ -50,6 +55,13 @@ public class FormationController {
     public String addFormation(@RequestBody Formation formation) {
 
         Formation insertedFormation = formationRepository.insert(formation);
+/*
+        for(Etudiant e : etudiantRepository.findAll())
+        {
+            pushNotification.sendMessageToUser("Ajouter formation",e.getDeviceId(),insertedFormation);
+        }*/
+
+
         return "La formation a été ajoutée avec succès!" ;
     }
     //Modifier une formation

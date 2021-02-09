@@ -12,6 +12,7 @@ public class Etudiant {
     @Id
     private String id;
     private String cin ;
+    private String photo;
     private String motdepasse ;
     private String nom ;
     private String prenom ;
@@ -20,11 +21,35 @@ public class Etudiant {
     private String adresse ;
     private String num_tel ;
     private String type;
+    private String deviceId;
 
 
     public Etudiant() {
         this.type="etudiant";
 
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+    public String getMotdepasse() {
+        return motdepasse;
+    }
+
+    public void setMotdepasse(String motdepasse) {
+        this.motdepasse = motdepasse;
     }
 
     public Etudiant(String cin, String mot_de_passe) {

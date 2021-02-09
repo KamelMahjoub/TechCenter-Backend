@@ -19,11 +19,10 @@ public class LoginController {
     @Autowired
     public FormateurRepository formateurRepository;
 
-    @GetMapping(value = "/login/{email}/{mot_de_passe}")
-    public Object login(@PathVariable("email") String email,@PathVariable("mot_de_passe") String mot_de_passe) {
+    @GetMapping(value = "/login/{email}/{mot_de_passe}/{deviceID}")
+    public Object login(@PathVariable("email") String email,@PathVariable("mot_de_passe") String mot_de_passe,@PathVariable("deviceID") String deviceID) {
         Etudiant e ;
         Formateur f;
-
         e = etudiantRepository.getEtudiantByEmailAndMotdepasse(email,mot_de_passe);
         if(e==null)
         {
@@ -42,6 +41,10 @@ public class LoginController {
         else
         {
             e = etudiantRepository.findEtudiantByEmail(email);
+            if(e!=null) {
+               e.setDeviceId(deviceID);
+                etudiantRepository.save(e);
+            }
             return e;
         }
     }

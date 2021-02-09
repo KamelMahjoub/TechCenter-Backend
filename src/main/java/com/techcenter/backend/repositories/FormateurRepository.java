@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FormateurRepository extends MongoRepository<Formateur,Long> {
 
     String deleteFormateurByCin(String cin);
-    Formateur findFormateurByCin (String cin);
+    Formateur findFormateurById (String id);
     Formateur getFormateurByEmailAndMotdepasse(String email,String mot_de_passe);
     Formateur getFormateurByEmail(String email);
 
