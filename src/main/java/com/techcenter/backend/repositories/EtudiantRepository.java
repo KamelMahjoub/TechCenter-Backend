@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface EtudiantRepository extends MongoRepository<Etudiant,Long> {
 
     String deleteEtudiantByCin(String cin);
+    boolean deleteById(String cin);
     Etudiant findEtudiantByCin (String cin);
     Etudiant findEtudiantById(String id);
     Etudiant findEtudiantByEmail(String email);

@@ -15,6 +15,7 @@ import java.util.List;
 public interface SessionRepository extends MongoRepository<Session,Long> {
 
     Session findSessionById(String id);
-
+    List<Session> findSessionByidFormation(String id);
+boolean deleteById(String id);
 
 }

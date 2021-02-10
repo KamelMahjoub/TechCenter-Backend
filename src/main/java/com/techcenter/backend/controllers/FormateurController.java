@@ -1,12 +1,10 @@
 package com.techcenter.backend.controllers;
 
-import com.techcenter.backend.models.Affecter;
-import com.techcenter.backend.models.Etudiant;
-import com.techcenter.backend.models.Formateur;
-import com.techcenter.backend.models.Session;
+import com.techcenter.backend.models.*;
 import com.techcenter.backend.repositories.FormateurRepository;
 import com.techcenter.backend.repositories.FormationRepository;
 
+import com.techcenter.backend.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +19,8 @@ public class FormateurController {
     public FormateurRepository formateurRepository;
     @Autowired
     public FormationRepository formationRepository;
+    @Autowired
+    public SessionRepository sessionRepository;
 
     //Liste des formateurs
     @GetMapping(value = "/ListedesFormateurs")
@@ -29,10 +29,10 @@ public class FormateurController {
     }
 
     //Supprimer un formateur par cin
-    @DeleteMapping(value ="/SupprimerFormateur/{cin}")
-    public String deleteFormateur(@PathVariable("cin")   String cin)
+    @DeleteMapping(value ="/SupprimerFormateur/{id}")
+    public String deleteFormateur(@PathVariable("id")   String id)
     {
-        formateurRepository.deleteFormateurByCin(cin);
+        formateurRepository.deleteFormateurById(id);
         return  "Le formateur a été supprimé avec succès";
     }
 
@@ -53,10 +53,10 @@ public class FormateurController {
         return "Le formateur a été ajouté avec succès!" ;
     }
 //Modifier un formateur
-    @PutMapping(value="/UpdateFormateur/{cin}")
-    public String updateFormateur(@RequestBody Formateur formateur, @PathVariable String cin)
+    @PutMapping(value="/UpdateFormateur/{id}")
+    public Formateur updateFormateur(@RequestBody Formateur formateur, @PathVariable String id)
     {
-        Formateur formateurData = formateurRepository.findFormateurByCin(cin);
+        Formateur formateurData = formateurRepository.findFormateurById(id);
        if(formateurData!=null) {
            formateurData.setCin(formateur.getCin());
            formateurData.setMot_de_passe(formateur.getMot_de_passe());
@@ -67,46 +67,104 @@ public class FormateurController {
            formateurData.setNum_tel(formateur.getNum_tel());
            formateurRepository.save(formateurData);
        }
-        return "Le formateur a été modifié avec succée";
+        return formateurData;
+    }
+    @PutMapping(value="/UpdatePasswordFormateur/{id}")
+    public String UpdatePassword(@RequestBody Password passwordEtudiant, @PathVariable String id)
+    {
+        Formateur formateurData = formateurRepository.findFormateurById(id);
+
+        if(formateurData.getMot_de_passe().equals(passwordEtudiant.getOldPassword())) {
+            formateurData.setMot_de_passe(passwordEtudiant.getNewPassword());
+            formateurRepository.save(formateurData);
+            return "Le formateur a été modifié avec succée";
+        }
+        else
+        {
+            return "";
+        }
+
+
+
+
+
     }
 
-    @GetMapping(value = "/getFormateurByCin/{cin}")
-    public Formateur getFormateurtByCin(@PathVariable("cin") String cin) {
-        return formateurRepository.findFormateurByCin(cin);
+
+
+    @GetMapping(value = "/getFormateurByCin/{id}")
+    public Formateur getFormateurtByCin(@PathVariable("id") String id) {
+        return formateurRepository.findFormateurById(id);
     }
     @PostMapping(value ="/AffecterFomateur")
     public String AffecterFomateur(@RequestBody Affecter affecter) {
 
-    	Formateur formateur=formateurRepository.findFormateurByCin(affecter.getNomFormateur());
-    	Session session=formationRepository.findFormationById(affecter.getTitreFormation()).getListeDesSession().get(affecter.getSessionFormation());
-    	
-    	 List<Session> listeSessions = formateur.getListeDesSessions();
+        Session sessionFormateur=sessionRepository.findSessionById(affecter.getIdSession());
+        List<String> listeSessions =    sessionFormateur.getListe_de_formateurs();
+
     	 if(listeSessions!=null)
     	 {
-    		 listeSessions.add(session);
+    		 listeSessions.add(affecter.getIdFormateur());
     	 }
     	 else
     	 {
-    		  listeSessions = new ArrayList<Session>();
+    		  listeSessions = new ArrayList<String>();
     		
-    		  listeSessions.add(session);
+    		  listeSessions.add(affecter.getIdFormateur());
     		 
     	 }
-    	
-    	 formateur.setListeDesSessions(listeSessions);
-    	 formateurRepository.save(formateur);
+
+        sessionFormateur.setListe_de_formateurs(listeSessions);
+    	 sessionRepository.save(sessionFormateur);
     	
     //    Formateur insertedFormateur = formateurRepository.insert(formateur);
-        return "Le formateur a été ajouté avec succès!" ;
+        return "Le Session a été affecté avec succès!" ;
     }
 
 
     //Liste des sessions par cin
-    @GetMapping(value = "/getListeSessionsFormateurs/{cin}")
-    public List<Session> getListeSessionsFormateurs(@PathVariable("cin") String cin) {
+    @GetMapping(value = "/getListeSessionsFormateurs/{id}")
+    public List<Session> getListeSessionsFormateurs(@PathVariable("id") String id) {
+        List<Session> sessionList = sessionRepository.findAll();
+        List<Session> sessionFormateur = new ArrayList<>();
+        for(Session s : sessionList)
+        {
+         if(s.getListe_de_formateurs().contains(id))
+         {
+             sessionFormateur.add(s);
+         }
+        }
+        return sessionFormateur;
+    }
 
-        List<Session> liste_des_sessions =  formateurRepository.findFormateurByCin(cin).getListeDesSessions();
-        return liste_des_sessions;
+    //Liste des sessions par cin
+    @GetMapping(value = "/getListFormation/{id}")
+    public List<Formation> getListFormation(@PathVariable("id") String id) {
+        List<Formation> formationList = new ArrayList<>();
+        List<Session> sessionList = sessionRepository.findAll();
+        for(Session s : sessionList)
+        {
+            if(s.getListe_de_formateurs().contains(id))
+            {
+                Formation f=formationRepository.findFormationById(s.getIdFormation());
+                if(!formationList.contains(f)){ formationList.add(f);}
+            }
+        }
+        return formationList;
+    }
+    @GetMapping(value = "/getListSessionById/{id}/{id2}")
+    public List<Session> getListSessionById(@PathVariable("id") String id,@PathVariable("id2") String id2) {
+
+        List<Session> sessionList = sessionRepository.findSessionByidFormation(id);
+        List<Session> sessionListRe = new ArrayList<>();
+        for(Session s : sessionList)
+        {
+            if(s.getListe_de_formateurs().contains(id2))
+            {
+                sessionListRe.add(s);
+            }
+        }
+        return sessionListRe;
     }
 
     @GetMapping(value = "/getFormateurByEmail/{email}")

@@ -16,7 +16,7 @@ public class Formation {
     private String niveau;
     private String image;
     private List<String> matiéres;
-    private List<Session> listeDesSessions;
+
 
 
 
@@ -69,14 +69,6 @@ public class Formation {
     public void setMatiéres(List<String> matiéres) {
         this.matiéres = matiéres;
     }
-    public List<Session> getListeDesSession() {
-        return listeDesSessions;
-    }
-
-    public void setListeDesSession(List<Session> listeDesSession) {
-        this.listeDesSessions = listeDesSession;
-    }
-
     public String getImage() {
         return image;
     }

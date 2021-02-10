@@ -5,11 +5,32 @@ import com.techcenter.backend.models.Password;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormateurRepository;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -41,9 +62,9 @@ public class EtudiantController {
 
 
     //Supprimer un etudiant par cin
-    @DeleteMapping(value = "/SupprimerEtudiant/{cin}")
-    public String deleteEtudiant(@PathVariable("cin") String cin) {
-        etudiantRepository.deleteEtudiantByCin(cin);
+    @DeleteMapping(value = "/SupprimerEtudiant/{id}")
+    public String deleteEtudiant(@PathVariable("id") String id) {
+        etudiantRepository.deleteById(id);
         return "L'étudiant a été supprimé avec succès";
     }
 
@@ -57,11 +78,12 @@ public class EtudiantController {
 
     //Modifier un etudiant
     @PutMapping(value="/UpdateEtudiant/{id}")
-    public String updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable String id)
+    public Etudiant updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable String id)
     {
       Etudiant etudiantData = etudiantRepository.findEtudiantById(id);
         if(etudiantData!=null) {
         	etudiantData.setCin(etudiant.getCin());
+           // etudiantData.setPhoto(etudiant.getPhoto());
             if(etudiant.getMot_de_passe()!=null){ etudiantData.setMot_de_passe(etudiant.getMot_de_passe());}
             etudiantData.setNom(etudiant.getNom());
             etudiantData.setPrenom(etudiant.getPrenom());
@@ -70,35 +92,101 @@ public class EtudiantController {
             etudiantData.setNum_tel(etudiant.getNum_tel());
             etudiantRepository.save(etudiantData);
         }
-        return "L'étudiant a été modifié avec succée";
+        return etudiantData;
     }
     //Modifier mot de passe d un etudiant
     @PutMapping(value="/UpdatePassword/{id}")
     public String UpdatePassword(@RequestBody Password passwordEtudiant, @PathVariable String id)
     {
-        System.out.println("test");
         Etudiant etudiantData = etudiantRepository.findEtudiantById(id);
-        if(etudiantData!=null)
-        {
+
             if(etudiantData.getMot_de_passe().equals(passwordEtudiant.getOldPassword())) {
                 etudiantData.setMot_de_passe(passwordEtudiant.getNewPassword());
                 etudiantRepository.save(etudiantData);
+                return "L'étudiant a été modifié avec succée";
             }
+            else
+            {
+                return "";
+            }
+
+
+
+
+
+    }
+
+
+    @PutMapping(value = "/api/upload/{id}")
+    public Etudiant uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable String id) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/home/dell/Documents/upload/")
+                .path(fileName)
+                .toUriString();
 
-        return "L'étudiant a été modifié avec succée";
+        Etudiant e = etudiantRepository.findEtudiantById(id);
+        e.setPhoto(fileName);
+        etudiantRepository.save(e);
+
+        return e;
     }
 
-
-    //Liste des sessions par ID
-    @GetMapping(value = "/getListeSessionsEtudiant/{id}")
-    public List<Session> getListeSessionsEtudiant(@PathVariable("id") String id) {
-        List<Session> liste_des_sessions =  etudiantRepository.findEtudiantById(id).getListe_des_session();
-        return liste_des_sessions;
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity downloadFileFromLocal(@PathVariable String fileName) {
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
-
-
+  /*  @GetMapping(value = "/image/{fileName:.+}")
+    public @ResponseBody byte[] getImage(@PathVariable String fileName) throws IOException {
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        InputStream in = resource.getInputStream();
+        return IOUtils.toByteArray(in);
+    }
+*/
+    @GetMapping(
+            value = "/image/{fileName:.+}"
+    )
+    public  String getImageWithMediaType(@PathVariable String fileName) throws IOException {
+        String fileBasePath="/home/dell/Documents/upload/";
+        Path path = Paths.get(fileBasePath + fileName);
+        /*Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        InputStream in = resource.getInputStream();
+        return IOUtils.toByteArray(in);*/
+        byte[] fileContent = FileUtils.readFileToByteArray(new File(path.toString()));
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+        return  encodedString;
+    }
 
 }
 

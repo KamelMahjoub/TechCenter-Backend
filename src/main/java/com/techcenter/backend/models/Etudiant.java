@@ -12,6 +12,7 @@ public class Etudiant {
     @Id
     private String id;
     private String cin ;
+    private String photo;
     private String motdepasse ;
     private String nom ;
     private String prenom ;
@@ -20,11 +21,35 @@ public class Etudiant {
     private String adresse ;
     private String num_tel ;
     private String type;
-    public List<Session> liste_des_sessions;
+    private String deviceId;
+
 
     public Etudiant() {
         this.type="etudiant";
-        this.liste_des_sessions = new ArrayList<Session>();
+
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+    public String getMotdepasse() {
+        return motdepasse;
+    }
+
+    public void setMotdepasse(String motdepasse) {
+        this.motdepasse = motdepasse;
     }
 
     public Etudiant(String cin, String mot_de_passe) {
@@ -116,13 +141,6 @@ public class Etudiant {
         this.num_tel = num_tel;
     }
 
-    public List<Session> getListe_des_session() {
-        return liste_des_sessions;
-    }
-
-    public void setListe_des_session(List<Session> liste_des_session) {
-        this.liste_des_sessions = liste_des_session;
-    }
 
     public String getType() {
         return type;
