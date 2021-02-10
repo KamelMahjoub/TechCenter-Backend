@@ -140,7 +140,7 @@ public class SessionController {
         return "La session a été ajoutée avec succès!" ;
     }
     //Modifier une session
-    @PutMapping(value="/UpdateSession/{id}}")
+    @PutMapping(value="/UpdateSession/{id}")
     public String updateSession(@RequestBody Session session, @PathVariable String id)
     {
     	Session s = sessionRepository.findSessionById(id);
@@ -151,6 +151,7 @@ public class SessionController {
             s.setDate_de_début(session.getDate_de_début());
             s.setDate_de_fin(session.getDate_de_fin());
             s.setNb_places(session.getNb_places());
+            s.setNiveau(session.getNiveau());
             if(s.getPrix()!=session.getPrix())
             {
                 s.setPrix(session.getPrix());
