@@ -29,10 +29,10 @@ public class FormateurController {
     }
 
     //Supprimer un formateur par cin
-    @DeleteMapping(value ="/SupprimerFormateur/{cin}")
-    public String deleteFormateur(@PathVariable("cin")   String cin)
+    @DeleteMapping(value ="/SupprimerFormateur/{id}")
+    public String deleteFormateur(@PathVariable("id")   String id)
     {
-        formateurRepository.deleteFormateurByCin(cin);
+        formateurRepository.deleteFormateurById(id);
         return  "Le formateur a été supprimé avec succès";
     }
 
