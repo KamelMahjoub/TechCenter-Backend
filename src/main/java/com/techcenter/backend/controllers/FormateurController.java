@@ -48,9 +48,25 @@ public class FormateurController {
     @PostMapping(value ="/AjoutFormateur")
     public String addFormateur(@RequestBody Formateur formateur) {
 
-        Formateur insertedFormateur = formateurRepository.insert(formateur);
+        Formateur formateurData = formateurRepository.findFormateurByCin(formateur.getCin());
+        Formateur formateurData2 = formateurRepository.findFormateurByEmail(formateur.getEmail());
+        if(formateurData!=null)
+        {
+            return "Le CIN existe déja !";
+        }
+        else
+        if(formateurData2!=null)
+        {
+            return "L'email existe déja !";
+        }
+        else
+        {
+            Formateur insertedFormateur = formateurRepository.insert(formateur);
 
-        return "Le formateur a été ajouté avec succès!" ;
+            return "Le formateur a été ajouté avec succès!" ;
+        }
+
+
     }
 //Modifier un formateur
     @PutMapping(value="/UpdateFormateur/{id}")

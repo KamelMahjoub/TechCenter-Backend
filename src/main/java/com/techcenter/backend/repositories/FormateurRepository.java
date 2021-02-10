@@ -11,6 +11,8 @@ public interface FormateurRepository extends MongoRepository<Formateur,Long> {
 
     String deleteFormateurById(String id);
     Formateur findFormateurById (String id);
+    Formateur findFormateurByCin(String cin);
+    Formateur findFormateurByEmail(String email);
     Formateur getFormateurByEmailAndMotdepasse(String email,String mot_de_passe);
     Formateur getFormateurByEmail(String email);
 

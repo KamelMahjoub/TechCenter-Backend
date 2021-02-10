@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class EtudiantController {
 
     @Autowired
@@ -173,7 +173,7 @@ public class EtudiantController {
             value = "/image/{fileName:.+}"
     )
     public  String getImageWithMediaType(@PathVariable String fileName) throws IOException {
-        String fileBasePath="/home/dell/Documents/upload/";
+        String fileBasePath="C:\\Users\\Kamel\\Desktop\\Pics\\";
         Path path = Paths.get(fileBasePath + fileName);
         /*Resource resource = null;
         try {
