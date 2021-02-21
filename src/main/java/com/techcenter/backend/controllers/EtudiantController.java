@@ -5,6 +5,7 @@ import com.techcenter.backend.models.Password;
 import com.techcenter.backend.models.Session;
 import com.techcenter.backend.repositories.EtudiantRepository;
 import com.techcenter.backend.repositories.FormateurRepository;
+import com.techcenter.backend.services.SendEmail;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -40,7 +42,8 @@ public class EtudiantController {
     @Autowired
     public EtudiantRepository etudiantRepository;
 
-
+    @Autowired
+    public FormateurRepository formateurRepository;
 
 
     //Liste des etudiants
@@ -60,7 +63,23 @@ public class EtudiantController {
         return etudiantRepository.findEtudiantByEmail(email);
     }
 
+    @GetMapping(value = "/getNameById/{id}")
+    public String getNameById(@PathVariable("id") String id) {
+        if(etudiantRepository.findEtudiantById(id)!=null)
+        {
+            return  etudiantRepository.findEtudiantById(id).getNom();
+        }
+        else
+            if(formateurRepository.findFormateurById(id)!=null)
+            {
+                return  formateurRepository.findFormateurById(id).getNom();
+            }
+            else
+            {
+                return "vide";
+            }
 
+    }
     //Supprimer un etudiant par cin
     @DeleteMapping(value = "/SupprimerEtudiant/{id}")
     public String deleteEtudiant(@PathVariable("id") String id) {
@@ -70,9 +89,10 @@ public class EtudiantController {
 
     //Ajouter un étudian t 
     @PostMapping(value = "/AjoutEtudiant")
-    public String addEtudiant(@RequestBody Etudiant etudiant) {
-
+    public String addEtudiant(@RequestBody Etudiant etudiant) throws IOException, MessagingException {
         Etudiant insertedEtudiant = etudiantRepository.insert(etudiant);
+        SendEmail email = new SendEmail();
+        email.sendmail(insertedEtudiant.getEmail(),"Bienvenu dans TechAcademy","Votre inscription est confirmee,"+etudiant.getNom()+" " );
         return "L'étudiant a été ajouté avec succès!";
     }
 
@@ -173,7 +193,7 @@ public class EtudiantController {
             value = "/image/{fileName:.+}"
     )
     public  String getImageWithMediaType(@PathVariable String fileName) throws IOException {
-        String fileBasePath="C:\\Users\\Kamel\\Desktop\\Pics\\";
+        String fileBasePath="/home/dell/Documents/upload/";
         Path path = Paths.get(fileBasePath + fileName);
         /*Resource resource = null;
         try {
@@ -187,6 +207,7 @@ public class EtudiantController {
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
         return  encodedString;
     }
+
 
 }
 

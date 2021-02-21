@@ -10,10 +10,13 @@ import com.techcenter.backend.repositories.FormationRepository;
 import com.techcenter.backend.repositories.PlaningRepository;
 import com.techcenter.backend.repositories.SessionRepository;
 import com.techcenter.backend.services.PushNotification;
+import com.techcenter.backend.services.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +52,21 @@ public class SessionController {
                sessionsEtudiant.add(s);
            }
        }
+        return sessionsEtudiant;
+    }
+
+    //Liste des sessions par etudiant
+    @GetMapping(value = "/getSessionByIdFormateur/{id}")
+    public List<Session> getSessionByIdFormateur(@PathVariable("id") String id) {
+        List<Session>sessionList=  sessionRepository.findAll();
+        List<Session> sessionsEtudiant = new ArrayList<>();
+        for(Session s :sessionList)
+        {
+            if(s.getListe_de_formateurs().contains(id))
+            {
+                sessionsEtudiant.add(s);
+            }
+        }
         return sessionsEtudiant;
     }
 
@@ -170,10 +188,11 @@ public class SessionController {
 
     //Inscription etudiant
     @PutMapping(value="/InscriptionEtudiant/{idsession}/{idetudiant}")
-    public String InscriptionEtudiant(@PathVariable String idsession , @PathVariable String idetudiant)
-    {
+    public String InscriptionEtudiant(@PathVariable String idsession , @PathVariable String idetudiant) throws IOException, MessagingException {
       List<String> listIdEtudiant = new ArrayList<>();
-        Session s = sessionRepository.findSessionById(idsession);
+      Etudiant etudiant = etudiantRepository.findEtudiantById(idetudiant);
+      Session s = sessionRepository.findSessionById(idsession);
+      Formation formation =formationRepository.findFormationById(s.getIdFormation());
         if(s.getNb_inscrits()==s.getNb_places())
         { return "la session a déja le nombre maximum d'inscriptions";}
         else  if(s.getListe_des_etudiants().contains(idetudiant))
@@ -195,7 +214,8 @@ public class SessionController {
             s.setListe_des_etudiants(listIdEtudiant);
             s.setNb_inscrits(s.getNb_inscrits()+1);
             sessionRepository.save(s);
-
+            SendEmail email = new SendEmail();
+            email.sendmail(etudiant.getEmail(),"Inscription dans la session : "+s.getNom_du_session()+" de la formation "+formation.getTitre(),"Votre inscription est confirmee");
             return "Inscription réussite";
         }
 
